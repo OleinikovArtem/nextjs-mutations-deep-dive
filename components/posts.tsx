@@ -1,18 +1,29 @@
 'use client'
 import { useOptimistic } from 'react'
 
+import Image, { ImageLoaderProps } from 'next/image'
 import { formatDate } from '@/lib/format'
 import LikeButton from './like-icon'
 
 import { PostResult } from '@/types'
 import { togglePostLikeStatus } from '@/actions/post'
 
+function imageLoader(config: ImageLoaderProps) {
+  const [urlStart, urlEnd] = config.src.split('upload/')
+  const transformations = `w_200,q_${config.quality}`
+
+  return `${urlStart}upload/${transformations}/${urlEnd}`
+}
 
 function Post({ post, updatePost }: { post: PostResult, updatePost: (postId: number) => void }) {
   return (
     <article className="post">
       <div className="post-image">
-        <img src={post.image} alt={post.title}/>
+        <Image
+          loader={imageLoader} src={post.image}
+          alt={post.title} quality={50}
+          width={200} height={120}
+        />
       </div>
       <div className="post-content">
         <header>
