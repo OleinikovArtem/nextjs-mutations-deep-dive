@@ -36,7 +36,7 @@ function initDb(): void {
   const stmt = db.prepare('SELECT COUNT(*) AS count FROM users')
   if ((stmt.get() as { count: number }).count === 0) {
     db.exec(`INSERT INTO users (first_name, last_name, email) VALUES ('John', 'Doe', 'john@example.com')`)
-    db.exec(`INSERT INTO users (first_name, last_name, email) VALUES ('Max', 'Schwarz', 'max@example.com')`)
+    db.exec(`INSERT INTO users (first_name, last_name, email) VALUES ('Art', 'Ole', 'art@example.com')`)
   }
 }
 

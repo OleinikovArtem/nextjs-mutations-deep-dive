@@ -1,30 +1,25 @@
-import { storePost } from '@/lib/posts'
+'use client'
+import { useActionState } from 'react'
+
+import { createPost } from '@/actions/post'
 
 export default function NewPostPage() {
-  async function createPost(formData: FormData) {
-    'use server'
-    const title = formData.get('title') as string
-    const image = formData.get('image') as string
-    const content = formData.get('content') as string
 
-    storePost({
-      imageUrl: '',
-      title,
-      content,
-      userId: 1,
-    })
-  }
+  const [state, action, isPending] = useActionState(
+    createPost,
+    {} as { errors?: string[] },
+  )
 
   return (
     <>
       <h1>Create a new post</h1>
-      <form action={createPost}>
+      <form action={action}>
         <p className="form-control">
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title"/>
         </p>
         <p className="form-control">
-          <label htmlFor="image">Image URL</label>
+          <label htmlFor="image">Image</label>
           <input
             type="file"
             accept="image/png, image/jpeg"
@@ -37,9 +32,16 @@ export default function NewPostPage() {
           <textarea id="content" name="content" rows={5}/>
         </p>
         <p className="form-actions">
-          <button type="reset">Reset</button>
-          <button>Create Post</button>
+          {isPending ? 'Saving...' : <>
+            <button type="reset">Reset</button>
+            <button>Create Post</button>
+          </>}
         </p>
+        {state.errors?.length && (
+          <ul className="form-errors">
+            {state.errors.map(err => <li key={err}>{err}</li>)}
+          </ul>
+        )}
       </form>
     </>
   )

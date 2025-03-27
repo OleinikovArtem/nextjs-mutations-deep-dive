@@ -8,5 +8,5 @@ export default async function FeedPage() {
       <h1>All posts by all users</h1>
       <Posts posts={posts}/>
     </>
-  );
+  )
 }
